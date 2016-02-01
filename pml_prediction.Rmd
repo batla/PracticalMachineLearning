@@ -87,7 +87,7 @@ dim(submissionTestSet)
 # is very small (20 records), I will partition the training set with a 60/40 
 # training to test set
 
-trainingSplit <- createDataPartition(trainingSet$classe, p=0.6, list=FALSE)
+trainingSplit <- createDataPartition(trainingSet$classe, p=0.3, list=FALSE)
 trainingSubset <- trainingSet[trainingSplit, ]
 testingSubset <- trainingSet[-trainingSplit, ]
 dim(trainingSubset); dim(testingSubset)
@@ -112,13 +112,13 @@ print(fit)
 print(fit$finalModel)
 ```
 
-The OOB estimate of error rate is .9%, therefore I decided to next apply the model to the testing subset partitioned from original training set.
+The OOB estimate of error rate is very low, therefore I decided to next apply the model to the testing subset partitioned from original training set.
 
 ```{r}
 predictTrainingSubset <- predict(fit, newdata=testingSubset)
 confusionMatrix(testingSubset$classe, predictTrainingSubset)
 ```
-The confusion matrix shows an accuracy of 99.07%!! I will not bother with other approaches such as Decision Tree or Generalized Boosted Regression. This is very good accuracy.
+The confusion matrix shows an accuracy of > 99%. I will not bother with other approaches such as Decision Tree or Generalized Boosted Regression. This is very good accuracy.
 
 I will now use this model to predict the exercise behavior (classe) of the submission test data set.
 
