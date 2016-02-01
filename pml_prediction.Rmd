@@ -75,6 +75,17 @@ submissionTestSet <- submissionTestSet[, uselessDims==F]
 # remove first few variables as they will not help with the model
 trainingSet <- trainingSet[, -(1:5)]
 submissionTestSet <- submissionTestSet[, -(1:5)]
+```
+
+Now find and keep highly correlated variables, try with cutoff=.75
+The idea here is to reduce the number of irrelevant variables for training the model
+
+```{r}
+corMatrix <- cor(trainingSet[,1:53])
+
+highlyCorrelated <- findCorrelation(corMatrix, cutoff=0.75)
+trainingSet <- trainingSet[,-(highlyCorrelated)]
+submissionTestSet <- submissionTestSet[,-(highlyCorrelated)]
 
 dim(trainingSet)
 dim(submissionTestSet)
@@ -82,12 +93,13 @@ dim(submissionTestSet)
 
 # Partitioning the training data
 
-```{r}
-# since the training set is large (19,622 records) and the test set for submission 
-# is very small (20 records), I will partition the training set with a 60/40 
-# training to test set
+Since the training set is large (19,622 records) and the test set for submission 
+is very small (20 records), I will partition the training set with a 60/40 
+training to test set
 
-trainingSplit <- createDataPartition(trainingSet$classe, p=0.3, list=FALSE)
+```{r}
+
+trainingSplit <- createDataPartition(trainingSet$classe, p=0.6, list=FALSE)
 trainingSubset <- trainingSet[trainingSplit, ]
 testingSubset <- trainingSet[-trainingSplit, ]
 dim(trainingSubset); dim(testingSubset)
