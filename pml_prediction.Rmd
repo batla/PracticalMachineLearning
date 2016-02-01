@@ -125,6 +125,6 @@ I will now use this model to predict the exercise behavior (classe) of the submi
 ```{r}
 # Now test on 20 test rows using RF model
 predictSubmissionTestSet <- predict(fit, newdata=submissionTestSet)
-print(predictSubmissionTest)
+print(predictSubmissionTestSet)
 ```
 
